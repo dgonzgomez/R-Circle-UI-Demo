@@ -13,7 +13,7 @@ function Tab({name,Icon,selected,onPress}){
  <Animated.View pointerEvents="none" style={{transform:[{scale:focus.interpolate({inputRange:[0,1],outputRange:[1,1.23]})},{translateY:focus.interpolate({inputRange:[0,1],outputRange:[0,-1]})}]}}><Icon size={21} strokeWidth={1.7} color={selected?'#ffffff':'#7d8876'}/></Animated.View>
  </Pressable>;
 }
-export default function GlassNavBar({selected,onSelect}){
- return <GlassSurface style={styles.bar}>{tabs.map(tab=><Tab key={tab.name} {...tab} selected={selected===tab.name} onPress={()=>onSelect(tab.name)}/>)}</GlassSurface>;
+export default function GlassNavBar({selected,onSelect,bottom=22}){
+ return <GlassSurface style={[styles.bar,{bottom}]}>{tabs.map(tab=><Tab key={tab.name} {...tab} selected={selected===tab.name} onPress={()=>onSelect(tab.name)}/>)}</GlassSurface>;
 }
 const styles=StyleSheet.create({bar:{position:'absolute',bottom:22,left:19,right:19,height:64,borderRadius:35,flexDirection:'row',padding:6,justifyContent:'space-between',zIndex:5,boxShadow:'0px 12px 32px #26351f22, inset 0px 1px 1px #ffffff, inset 0px -1px 1px #ffffff80'},tab:{flex:1,alignItems:'center',justifyContent:'center'},lens:{position:'absolute',width:49,height:49,borderRadius:26},lensSurface:{flex:1,borderRadius:26,backgroundColor:'#31533fe8',boxShadow:'inset 0px 1px 2px #ffffff, inset 0px -2px 4px #16382966, 0px 3px 9px #36532d25'}});
