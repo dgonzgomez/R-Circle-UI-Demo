@@ -1,0 +1,36 @@
+{
+  "name": "rcircle-demo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "expo start",
+    "web": "npm run build && vite preview --host 0.0.0.0 --port 5173",
+    "build": "vite build",
+    "ios": "expo start --ios",
+    "android": "expo start --android"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "private": true,
+  "dependencies": {
+    "expo": "^58.0.21",
+    "expo-blur": "^58.0.5",
+    "expo-glass-effect": "^58.0.5",
+    "expo-image-picker": "^58.0.10",
+    "expo-linear-gradient": "^58.0.3",
+    "lucide-react-native": "^1.65.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "react-native": "^0.88.1",
+    "react-native-svg": "^15.16.0",
+    "react-native-web": "^0.21.4"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^6.1.2",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.5"
+  }
+}
