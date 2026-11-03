@@ -1,8 +1,8 @@
 export const blockTitles={music:'Favorite song',foods:'Favorite foods',photos:'Favorite pictures',interests:'Interests'};
 export function defaultBlockData(type,person,photos){
  if(type==='music')return {title:blockTitles.music,song:person.song.split(' · ')[0],artist:person.song.split(' · ')[1]||'',album:person.songAlbum||'',cover:person.songCover||person.image};
- if(type==='foods')return {title:blockTitles.foods,items:[{name:'Vanilla Ice Blended',place:'Coffee Bean',image:photos.coffee},{name:'Charburger',place:'The Habit',image:photos.burger}]};
- if(type==='photos')return {title:blockTitles.photos,items:[{image:person.image},{image:photos.garden}]};
+ if(type==='foods')return {title:blockTitles.foods,items:person.foods||[{name:'Vanilla Ice Blended',place:'Coffee Bean',image:photos.coffee},{name:'Charburger',place:'The Habit',image:photos.burger}]};
+ if(type==='photos')return {title:blockTitles.photos,items:person.pictures||[{image:person.image},{image:photos.garden}]};
  return {title:blockTitles.interests,items:[...person.interests]};
 }
 export function moveBlock(order,id,offset,heights,gap=14){

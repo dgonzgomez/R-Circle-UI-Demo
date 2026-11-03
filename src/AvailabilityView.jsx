@@ -3,6 +3,7 @@ import React,{useState} from 'react';
 import {StyleSheet,Text,View} from 'react-native';
 import {CalendarDays,Check,ChevronRight,Clock3,Coffee,Trees} from 'lucide-react-native';
 import GlassSurface from './GlassSurface';
+import {formatMinutes} from './agenda';
 const ink='#233d32';
 export default function AvailabilityView({people,me,day,onSelect,suggestionsOnly,range}) {
  const [selected,setSelected]=useState(people.slice(0,2).map(p=>p.handle));
@@ -11,7 +12,8 @@ export default function AvailabilityView({people,me,day,onSelect,suggestionsOnly
  const start=selected.includes('sofiapark')?'4:00 PM':'3:00 PM';
  const friend=typeof range==='object'?range?.person:null;
  const rangeLabel=typeof range==='string'?range:range?.range;
- const slots=[{title:friend?`Coffee with ${friend.name.split(' ')[0]}`:'Coffee with friends',time:suggestionsOnly?'3:30 PM':start,end:'4:15 PM',place:'Coffee Bean · HUB',kind:'coffee',desc:'Meet friends for coffee.',day:selectedDay},{title:'Walk with friends',time:'4:00 PM',end:'5:00 PM',place:'UCR Botanic Gardens',kind:'walk',desc:'Meet at the gardens entrance.',day:selectedDay},...(friend?[{title:'Campus art pop-up',time:'3:15 PM',end:'4:00 PM',place:'Arts Building · Atrium',kind:'design',desc:'Browse student work during your shared free time.',day:selectedDay}]:[])];
+ const invitees=typeof range==='object'?range?.invitees:null;
+ const slots=invitees?gapSlots({invitees,me,start:range.start,end:range.end,day:selectedDay}):[{title:friend?`Coffee with ${friend.name.split(' ')[0]}`:'Coffee with friends',time:suggestionsOnly?'3:30 PM':start,end:'4:15 PM',place:'Coffee Bean · HUB',kind:'coffee',desc:'Meet friends for coffee.',day:selectedDay},{title:'Walk with friends',time:'4:00 PM',end:'5:00 PM',place:'UCR Botanic Gardens',kind:'walk',desc:'Meet at the gardens entrance.',day:selectedDay},...(friend?[{title:'Campus art pop-up',time:'3:15 PM',end:'4:00 PM',place:'Arts Building · Atrium',kind:'design',desc:'Browse student work during your shared free time.',day:selectedDay}]:[])];
  return <View style={{gap:16}}>
  {!suggestionsOnly&&<GlassSurface style={styles.card}>
  <View style={styles.people}>{people.map(p=><Pressable key={p.handle} accessibilityRole="checkbox" accessibilityState={{checked:selected.includes(p.handle)}} accessibilityLabel={`Compare schedule with ${p.name}`} onPress={()=>setSelected(selected.includes(p.handle)?selected.filter(h=>h!==p.handle):[...selected,p.handle])} style={styles.person}><View style={[styles.avatar,{backgroundColor:p.color,borderColor:selected.includes(p.handle)?'#557863':'#ffffff80'}]}><Text style={{fontSize:20,color:ink}}>{p.initial}</Text>{selected.includes(p.handle)&&<View style={styles.selected}><Check size={8} color="white"/></View>}</View><Text style={styles.personName}>{p.name.split(' ')[0]}</Text></Pressable>)}</View>
@@ -24,3 +26,15 @@ export default function AvailabilityView({people,me,day,onSelect,suggestionsOnly
  </View>;
 }
 const styles=StyleSheet.create({card:{borderRadius:26,padding:21},row:{flexDirection:'row',gap:12,alignItems:'center'},people:{flexDirection:'row',gap:23},person:{alignItems:'center'},avatar:{width:48,height:48,borderRadius:25,borderWidth:2,alignItems:'center',justifyContent:'center'},selected:{position:'absolute',bottom:-1,right:-1,width:15,height:15,borderRadius:8,backgroundColor:'#557863',alignItems:'center',justifyContent:'center',borderWidth:2,borderColor:'#edf1e7'},personName:{fontSize:10,color:'#71826c',marginTop:8},date:{flex:1,alignItems:'center',padding:12,borderWidth:1,borderColor:'transparent',borderRadius:17},small:{fontSize:10,color:'#829077'}});
+
+// Suggestions for a free gap: only you and the friends you picked are invited.
+function gapSlots({invitees,me,start,end,day}){
+ const names=invitees.map(p=>p.name.split(' ')[0]);
+ const who=!names.length?'':names.length===1?names[0]:`${names.slice(0,-1).join(', ')} & ${names[names.length-1]}`;
+ const attendees=[me,...invitees];
+ const at=(offset,len)=>{const a=Math.min(start+offset,Math.max(start,end-len)),b=Math.min(end,a+len);return {time:formatMinutes(a),end:formatMinutes(b)}};
+ return [
+  {title:who?`Coffee with ${who}`:'Coffee break',...at(0,45),place:'Coffee Bean · HUB',kind:'coffee',desc:who?`Coffee with ${who} during your shared free time.`:'A quick coffee in your free time.',day,attendees,organizer:me},
+  {title:who?`Walk with ${who}`:'Garden walk',...at(15,60),place:'UCR Botanic Gardens',kind:'walk',desc:'Meet at the gardens entrance.',day,attendees,organizer:me},
+ ];
+}

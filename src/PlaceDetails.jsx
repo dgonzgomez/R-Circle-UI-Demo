@@ -6,9 +6,9 @@ import Pressable from './TransitionPressable';
 
 const ink='#233d32';
 function describe(name){
- if(/Coffee/i.test(name))return {title:'Coffee Bean',image:'coffee',body:'Coffee, drinks, and outdoor seating. Maya is here right now.',busy:'Not too busy',match:/Coffee/i};
+ if(/Coffee/i.test(name))return {title:'Coffee Bean',image:'coffeeStore',body:'Coffee, drinks, and outdoor seating at the HUB.',busy:'Not too busy',match:/Coffee/i};
  if(/Library/i.test(name))return {title:'Rivera Library',image:'library',body:'The second floor has open seats and study areas.',busy:'Moderately busy',match:/Library/i};
- if(/Habit/i.test(name))return {title:name,image:'burger',body:'Charburgers, sandwiches, and sides on campus.',busy:'Not too busy'};
+ if(/Habit/i.test(name))return {title:name,image:'habitStore',body:'Charburgers, sandwiches, and sides on campus.',busy:'Not too busy'};
  if(name==='SRC'||/Recreation/i.test(name))return {title:'Student Recreation Center',body:'Campus gym, courts, and recreation facilities. Meet at the main entrance.',busy:'Not too busy'};
  return {title:name,image:'garden',body:'Walking trails and shaded areas at the UCR Botanic Gardens.',busy:'Not too busy'};
 }
