@@ -19,18 +19,21 @@ export function groupAgenda(events){
 }
 export function formatMinutes(m){const h=Math.floor(m/60),mm=m%60;return `${h%12||12}:${String(mm).padStart(2,'0')} ${h>=12?'PM':'AM'}`}
 export function formatDuration(m){const h=Math.floor(m/60),mm=m%60;return h?`${h}h${mm?` ${mm}m`:''}`:`${mm}m`}
-// Groups interleaved with the free gaps between them.
-export function agendaTimeline(events){
- const groups=groupAgenda(events),items=[];
- groups.forEach((group,i)=>{
-  if(i>0){
-   const prev=groups[i-1];
-   const prevEnd=Math.max(...prev.events.map(e=>eventMinutes(e.end)??(eventMinutes(e.time)??0)+60));
-   const nextStart=Math.min(...group.events.map(e=>eventMinutes(e.time)??Infinity));
-   if(Number.isFinite(nextStart)&&nextStart-prevEnd>=15)items.push({type:'gap',start:prevEnd,end:nextStart});
-  }
-  items.push({type:'group',group});
- });
+// Show the whole waking day, including free time before and after plans.
+export function agendaTimeline(events,{start=8*60,end=22*60}={}){
+ if(!events.length)return [];
+ const entries=[
+  ...groupAgenda(events.filter(event=>!event.pending)).map(group=>({type:'group',group,events:group.events})),
+  ...events.filter(event=>event.pending).map(event=>({type:'invitation',event,events:[event]})),
+ ].map(item=>({...item,start:Math.min(...item.events.map(e=>eventMinutes(e.time)??Infinity))}))
+ .sort((a,b)=>a.start-b.start);
+ const items=[];let cursor=start;
+ for(const item of entries){
+  if(Number.isFinite(item.start)&&item.start-cursor>=15)items.push({type:'gap',start:cursor,end:item.start});
+  items.push(item);
+  cursor=Math.max(cursor,...item.events.map(e=>eventMinutes(e.end)??(eventMinutes(e.time)??cursor)+60));
+ }
+ if(end-cursor>=15)items.push({type:'gap',start:cursor,end});
  return items;
 }
 // Demo busy schedules for friends (minutes from midnight), nudged per day so each day looks different.
