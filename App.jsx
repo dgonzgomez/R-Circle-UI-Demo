@@ -155,6 +155,13 @@ const [handleDraft,setHandleDraft]=useState(defaultProfile.handle);
 const [usernameError,setUsernameError]=useState('');
 const [replyTo,setReplyTo]=useState(null);
 const [tab,setTab]=useState('Map'),[query,setQuery]=useState(''),[searchFocused,setSearchFocused]=useState(false),[answer,setAnswer]=useState(false),[modal,setModal]=useState(null),[toast,setToast]=useState(''),[filter,setFilter]=useState('All'),[profileTab,setProfileTab]=useState('Reviews'),[agendaFriends,setAgendaFriends]=useState([]),[day,setDay]=useState(30),[events,setEvents]=useState(initialEvents),[liked,setLiked]=useState({}),[reply,setReply]=useState(''),[replies,setReplies]=useState({}),[note,setNote]=useState(''),[privacy,setPrivacy]=useState('Inner circle'),[savedNotes,setSavedNotes]=useState([]),[bio,setBio]=useState(defaultProfile.bio),[bg,setBg]=useState(defaultProfile.image),[notifications,setNotifications]=useState(true),[shareLocation,setShareLocation]=useState(true),[playing,setPlaying]=useState(false);
+useEffect(()=>{
+ if(Platform.OS!=='web')return;
+ const color=tab==='Map'?'#e7ecde':'#e8eee7';
+ document.documentElement.style.backgroundColor=color;
+ document.body.style.backgroundColor=color;
+ document.querySelector('meta[name="theme-color"]')?.setAttribute('content',color);
+},[tab]);
 const me={...profile,image:bg,bio};
 const takenHandles=[...people.map(person=>person.handle),'admin','support','rcircle'];
 const changeUsername=input=>{
@@ -308,7 +315,7 @@ return <PreviewScaleContext.Provider value={previewScale}><TransitionOriginConte
 {filtered.map(result=><Pressable key={result.id} onPress={()=>{closeSearch();result.action()}} style={s.resultRow}><View style={s.smallIcon}><Icon as={result.icon} size={18}/></View><View style={{flex:1}}><Txt style={s.itemTitle}>{result.title}</Txt><Txt style={s.itemSub}>{result.sub}</Txt>{result.kind==='post'&&!!result.text&&<Txt numberOfLines={2} style={{fontSize:12,color:'#71806a',lineHeight:19,marginTop:7}}>{result.text}</Txt>}</View></Pressable>)}
 {!filtered.length&&<Txt style={{fontSize:13,color:C.muted,lineHeight:22}}>No results for “{query.trim()}”.</Txt>}
 </ScrollView>}</SearchOverlay>
-<GlassNavBar selected={tab} onSelect={switchTab} bottom={onIphone?0:22}/>{!onIphone&&<View style={s.homeIndicator}/>}
+<GlassNavBar selected={tab} onSelect={switchTab} bottom={onIphone?18:22}/>{!onIphone&&<View style={s.homeIndicator}/>}
 {detailStack.map((route,index)=><View key={route.key} pointerEvents={index===detailStack.length-1?'auto':'none'} accessibilityElementsHidden={index!==detailStack.length-1} importantForAccessibility={index===detailStack.length-1?'auto':'no-hide-descendants'} style={[StyleSheet.absoluteFillObject,{zIndex:(revealStatus?20:100)+index}]}>{renderDetail(route)}</View>)}
 {blockFocus&&<BlockEditor focus={blockFocus} size={screenSize} data={focusedBlockData} onSelect={selection=>setBlockFocus(current=>({...current,selection}))} onAction={focusAction} actionLabel={blockFocus.type==='music'?'Listen on Apple Music':blockFocus.type==='foods'?`View ${focusedItem?.place||'place'}`:'View photo'} onChange={data=>updateBlock(blockFocus,data)} onDelete={()=>setModuleLayouts(current=>({...current,[blockFocus.owner]:(current[blockFocus.owner]||['music','foods','photos','interests']).filter(type=>type!==blockFocus.type)}))} onClose={()=>setBlockFocus(null)} notify={notify}/>}
 {!!toast&&<View style={[s.toast,bottomInset>0&&{bottom:100+bottomInset}]}><Check size={16} color="white"/><Txt style={{color:'white',fontSize:12,flex:1,lineHeight:18}}>{toast}</Txt></View>}
