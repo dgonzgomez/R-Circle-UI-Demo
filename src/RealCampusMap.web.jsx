@@ -30,7 +30,7 @@ const css=`
 `;
 
 const HOME=[33.9741,-117.32985],HOME_ZOOM=16.35;
-export default function RealCampusMap({events=[],people=[],onEvent,onPlace,onFriend,onDiscovery,onSpot,filter='All',bottomInset=0,recenter=0}){
+export default function RealCampusMap({events=[],people=[],onEvent,onPlace,onFriend,onDiscovery,onSpot,filter='All',bottomInset=0,recenter=0,focus=null}){
  const host=useRef(null),map=useRef(null),layer=useRef(null);
  const cb=useRef({});cb.current={onEvent,onPlace,onFriend,onDiscovery,onSpot};
  useEffect(()=>{
@@ -43,6 +43,13 @@ export default function RealCampusMap({events=[],people=[],onEvent,onPlace,onFri
   setTimeout(()=>m.invalidateSize(),50);
   return()=>{m.remove();map.current=null};
  },[]);
+ useEffect(()=>{
+  const m=map.current,pos=focus&&(focus.event.pos||spotFor(focus.event.place));
+  if(!m||!pos)return;
+  const z=18,shift=(184+bottomInset)/2;
+  const target=m.unproject(m.project(L.latLng(pos),z).add([0,shift]),z);
+  m.flyTo(target,z,{duration:.75});
+ },[focus,bottomInset]);
  // Re-center on you, placing your dot in the middle of the strip between the search bar and the dock.
  useEffect(()=>{const m=map.current;if(!recenter||!m)return;const z=18.4,shift=(184+bottomInset)/2;const target=m.unproject(m.project(L.latLng(YOU),z).add([0,shift]),z);m.flyTo(target,z,{duration:.7})},[recenter]);
  useEffect(()=>{
@@ -56,11 +63,13 @@ export default function RealCampusMap({events=[],people=[],onEvent,onPlace,onFri
   if(show('Discoveries'))utilitySpots.forEach(u=>{const html=`<div class="rc-photo"><div class="wrap"><div class="ph rc-util ${u.kind}"><svg viewBox="0 0 24 24">${utilityIcons[u.kind==='printer'?'printer':'shopping-basket']}</svg></div><div class="badge"><svg viewBox="0 0 24 24">${pinIcons.design}</svg></div></div><div class="tip"></div></div>`;
    L.marker(u.pos,{icon:L.divIcon({className:'',html,iconSize:[0,0]}),title:`${u.title}, ${u.place}`,zIndexOffset:250}).on('click',()=>cb.current.onSpot?.(u)).addTo(g)});
   const used={};
-  if(show('Spots'))[...events,...campusEvents.filter(c=>!events.some(e=>e.title===c.title))].forEach(e=>{const pos=e.pos||spotFor(e.place);if(!pos)return;const start=eventMinutes(e.time);if(start===null)return;const t=timing(e,start,eventMinutes(e.end));if(t.key==='past'||daysAway(e)>30)return;
+  const mapEvents=[...events,...campusEvents.filter(c=>!events.some(e=>e.title===c.title))];
+  if(focus&&!mapEvents.some(e=>e.title===focus.event.title))mapEvents.push(focus.event);
+  if(show('Spots'))mapEvents.forEach(e=>{const pos=e.pos||spotFor(e.place);if(!pos)return;const start=eventMinutes(e.time);if(start===null)return;const t=timing(e,start,eventMinutes(e.end));if((t.key==='past'||daysAway(e)>30)&&e.title!==focus?.event.title)return;
    const k=pos.join();const n=used[k]=(used[k]||0)+1;const at=[pos[0]-(n-1)*.00028,pos[1]];
    const html=`<div class="rc-gpin ${t.key}" style="--c:${t.color}"><div class="drop"></div><svg viewBox="0 0 24 24">${pinIcons[pinIconFor(e)]}</svg></div>`;
    L.marker(at,{icon:L.divIcon({className:'',html,iconSize:[0,0]}),title:`${e.title}, ${t.label}`,zIndexOffset:1000+(t.key==='now'?400:t.key==='today'?300:t.key==='week'?200:0)}).on('click',()=>cb.current.onEvent?.(e)).addTo(g)});
- },[events,people,filter]);
+ },[events,people,filter,focus]);
  return <View style={StyleSheet.absoluteFillObject}>
   <div ref={host} className="rc-map" style={{position:'absolute',inset:0}}/>
   <div className="rc-legend" style={{bottom:330+bottomInset}}>{legend.map(([c,l])=><span key={l}><i style={{background:c}}/>{l}</span>)}</div>
