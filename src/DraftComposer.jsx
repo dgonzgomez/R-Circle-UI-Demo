@@ -27,22 +27,23 @@ const PLACES=[{name:'Coffee Bean · HUB',sub:'2 min away'},{name:'Rivera Library
 function Chip({label,sub,on,onPress}){return <Pressable accessibilityRole="button" accessibilityState={{selected:on}} onPress={onPress} style={[styles.chip,on&&styles.chipOn]}><Text style={[styles.text,{fontSize:12,color:on?'white':'#233d32'}]}>{label}</Text>{!!sub&&<Text style={[styles.text,{fontSize:8,marginTop:3,color:on?'#d6e2d2':'#81917c'}]}>{sub}</Text>}</Pressable>}
 function Chips({children,initial=0}){const ref=useRef(null);return <ScrollView ref={ref} horizontal showsHorizontalScrollIndicator={false} onLayout={()=>ref.current?.scrollTo({x:Math.max(0,initial),animated:false})} contentContainerStyle={{gap:7,paddingVertical:2,paddingRight:8}}>{children}</ScrollView>}
 
-export default function DraftComposer({kind,person,day,people=[],onSubmit}){
- const isEvent=kind==='addEvent';
- const [title,setTitle]=useState('');
- const [body,setBody]=useState('');
- const [place,setPlace]=useState('');
- const [date,setDate]=useState(day>=26||day===1?day:30);
- const [startMin,setStartMin]=useState(12*60);
- const [length,setLength]=useState(60);
+export default function DraftComposer({kind,person,day,people=[],onSubmit,initialEvent=null}){
+ const isEvent=kind==='addEvent'||kind==='editEvent';
+ const [title,setTitle]=useState(initialEvent?.title||'');
+ const [body,setBody]=useState(initialEvent?.desc||'');
+ const [place,setPlace]=useState(initialEvent?.place||'');
+ const [date,setDate]=useState(initialEvent?.day||(day>=26||day===1?day:30));
+ const [startMin,setStartMin]=useState(eventMinutes(initialEvent?.time)??12*60);
+ const [length,setLength]=useState(initialEvent?Math.max(15,(eventMinutes(initialEvent.end)??startMin+60)-startMin):60);
  const [panel,setPanel]=useState(null);
- const [invited,setInvited]=useState([]);
+ const [invited,setInvited]=useState(initialEvent?.attendees?.filter(p=>p.handle!==person.handle).map(p=>p.handle)||[]);
  const toggle=p=>setPanel(cur=>cur===p?null:p);
  const start=formatMinutes(startMin),end=formatMinutes(Math.min(startMin+length,24*60-1));
  const startOptions=Array.from({length:96},(_,i)=>({value:i*15,label:formatMinutes(i*15)}));
  const endOptions=Array.from({length:Math.floor((24*60-15-startMin)/15)},(_,i)=>(i+1)*15).map(l=>({value:l,label:formatMinutes(startMin+l),sub:durLabel(l)}));
  const placeMatches=PLACES.filter(x=>!place.trim()||x.name.toLowerCase().includes(place.trim().toLowerCase()));
- const invitedPeople=people.filter(p=>invited.includes(p.handle));
+ const inviteOptions=[...people,...(initialEvent?.attendees||[]).filter(p=>p.handle!==person.handle&&!people.some(friend=>friend.handle===p.handle))];
+ const invitedPeople=inviteOptions.filter(p=>invited.includes(p.handle));
  const [privacy,setPrivacy]=useState('Inner circle');
  const [error,setError]=useState('');
  const send=()=>{
@@ -74,7 +75,7 @@ export default function DraftComposer({kind,person,day,people=[],onSubmit}){
  {!isEvent&&<View style={[styles.row,{paddingTop:17,gap:8}]}>{['Inner circle','Everyone'].map(option=><Pressable key={option} accessibilityRole="button" accessibilityState={{selected:privacy===option}} onPress={()=>setPrivacy(option)} style={[styles.privacy,privacy===option&&{backgroundColor:'#54725c25',borderColor:'#6d8e6d55'}]}><Text style={[styles.text,{fontSize:10}]}>{option}</Text></Pressable>)}</View>}
  </GlassSurface>
  {!!error&&<Text accessibilityRole="alert" style={[styles.text,{fontSize:12,color:'#925b49',paddingHorizontal:10}]}>{error}</Text>}
- <Pressable accessibilityRole="button" onPress={send}><GlassSurface style={styles.submit}>{isEvent?<CalendarDays size={17} color="#233d32"/>:<Send size={17} color="#233d32"/>}<Text style={[styles.text,{fontSize:13,fontWeight:'500'}]}>{isEvent?(invited.length?`Add & invite ${invited.length}`:'Add to agenda'):'Post'}</Text></GlassSurface></Pressable>
+ <Pressable accessibilityRole="button" onPress={send}><GlassSurface style={styles.submit}>{isEvent?<CalendarDays size={17} color="#233d32"/>:<Send size={17} color="#233d32"/>}<Text style={[styles.text,{fontSize:13,fontWeight:'500'}]}>{kind==='editEvent'?'Save changes':isEvent?(invited.length?`Add & invite ${invited.length}`:'Add to agenda'):'Post'}</Text></GlassSurface></Pressable>
  </View>;
 }
 const styles=StyleSheet.create({text:{fontFamily:Platform.OS==='web'?'-apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif':undefined,color:'#233d32'},card:{padding:23,borderRadius:29,backgroundColor:'#ffffff60'},row:{flexDirection:'row',alignItems:'center',gap:9},avatar:{width:32,height:32,borderRadius:17,alignItems:'center',justifyContent:'center',borderWidth:2,borderColor:'#fff'},initial:{fontFamily:Platform.OS==='web'?'Georgia':undefined,color:'#503d32',fontSize:16},title:{fontSize:27,letterSpacing:-.7,lineHeight:34,color:'#233d32',marginTop:27,minHeight:42,...Platform.select({web:{outlineStyle:'none'}})},body:{fontSize:14,lineHeight:23,color:'#3e5746',marginTop:12,minHeight:100,textAlignVertical:'top',...Platform.select({web:{outlineStyle:'none'}})},fieldRow:{flexDirection:'row',alignItems:'center',gap:10},field:{fontSize:12,color:'#233d32',flex:1,minHeight:29,...Platform.select({web:{outlineStyle:'none'}})},privacy:{paddingHorizontal:13,paddingVertical:8,borderRadius:17,borderWidth:1,borderColor:'#ffffff80'},value:{fontSize:12,flex:1},pill:{paddingHorizontal:11,paddingVertical:6,borderRadius:14,backgroundColor:'#ffffff70',borderWidth:1,borderColor:'#ffffffaa'},pillOn:{borderColor:'#6d8e6d88',backgroundColor:'#ffffffd0'},chip:{minWidth:46,paddingHorizontal:12,paddingVertical:8,borderRadius:14,backgroundColor:'#ffffff70',borderWidth:1,borderColor:'#ffffffaa',alignItems:'center'},chipOn:{backgroundColor:'#3f6a50',borderColor:'#3f6a50'},stack:{flexDirection:'row'},mini:{width:20,height:20,borderRadius:10,borderWidth:1.5,borderColor:'white',alignItems:'center',justifyContent:'center'},inviteList:{borderRadius:18,backgroundColor:'#ffffff45',paddingHorizontal:12},inviteRow:{flexDirection:'row',alignItems:'center',gap:10,paddingVertical:9},check:{width:18,height:18,borderRadius:9,borderWidth:1.5,borderColor:'#c3cbb8',alignItems:'center',justifyContent:'center'},checkOn:{backgroundColor:'#3f6a50',borderColor:'#3f6a50'},whenRow:{flexDirection:'row',justifyContent:'space-between',alignItems:'center',paddingLeft:27,marginTop:-4},when:{fontSize:14,paddingVertical:4,paddingHorizontal:6,marginHorizontal:-6,borderRadius:8},whenOn:{backgroundColor:'#3f6a5014',color:'#2f5a40'},toggle:{marginLeft:'auto',width:36,height:20,borderRadius:10,padding:2,backgroundColor:'#cfd6c6',justifyContent:'center'},knob:{width:16,height:16,borderRadius:8,backgroundColor:'white',boxShadow:'0px 1px 2px #00000025'},month:{marginLeft:27,padding:12,borderRadius:18,backgroundColor:'#ffffff55'},navBtn:{width:28,height:28,borderRadius:14,alignItems:'center',justifyContent:'center'},grid:{flexDirection:'row',flexWrap:'wrap'},cellHead:{width:`${100/7}%`,textAlign:'center',fontSize:9,color:'#8d9a85',marginBottom:6},cell:{width:`${100/7}%`,alignItems:'center',paddingVertical:2},dayDot:{width:30,height:30,borderRadius:15,alignItems:'center',justifyContent:'center'},dayOn:{backgroundColor:'#3f6a50'},today:{borderWidth:1,borderColor:'#3f6a50'},timeList:{marginLeft:27,maxHeight:190,borderRadius:16,backgroundColor:'#ffffff55'},timeRow:{height:38,paddingHorizontal:14,flexDirection:'row',alignItems:'center'},timeOn:{backgroundColor:'#3f6a5016'},submit:{height:48,borderRadius:24,flexDirection:'row',alignItems:'center',justifyContent:'center',gap:9}});
