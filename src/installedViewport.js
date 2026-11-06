@@ -1,21 +1,19 @@
-// iOS can report a home-screen layout viewport shorter than the display.
-// Size the installed canvas from the display, without resizing it for a keyboard.
-export function installedIphoneHeight({standalone,iphone,screenWidth,screenHeight,portrait}){
- if(!standalone||!iphone||screenWidth<=0||screenHeight<=0)return null;
- return portrait?Math.max(screenWidth,screenHeight):Math.min(screenWidth,screenHeight);
+// With the default status bar, iOS positions the web view below the system bar.
+// Use its layout height, never screen.height, which includes that system area.
+export function installedIphoneHeight({standalone,iphone,viewportHeight}){
+ if(!standalone||!iphone||!Number.isFinite(viewportHeight)||viewportHeight<=0)return null;
+ return viewportHeight;
 }
 
 export function syncInstalledViewport(browser=window){
  const root=browser.document.documentElement;
  const standalone=browser.matchMedia('(display-mode: standalone)');
  const fullscreen=browser.matchMedia('(display-mode: fullscreen)');
- const orientation=browser.matchMedia('(orientation: portrait)');
  const update=()=>{
   const height=installedIphoneHeight({
    standalone:browser.navigator.standalone===true||standalone.matches||fullscreen.matches,
    iphone:/iPhone|iPod/.test(browser.navigator.userAgent||''),
-   screenWidth:browser.screen.width,screenHeight:browser.screen.height,
-   portrait:orientation.matches,
+   viewportHeight:browser.innerHeight,
   });
   if(height)root.style.setProperty('--installed-app-height',`${height}px`);
   else root.style.removeProperty('--installed-app-height');
@@ -25,12 +23,12 @@ export function syncInstalledViewport(browser=window){
  browser.addEventListener('pageshow',update);
  standalone.addEventListener('change',update);
  fullscreen.addEventListener('change',update);
- orientation.addEventListener('change',update);
+ browser.addEventListener('orientationchange',update);
  return()=>{
   browser.removeEventListener('resize',update);
   browser.removeEventListener('pageshow',update);
   standalone.removeEventListener('change',update);
   fullscreen.removeEventListener('change',update);
-  orientation.removeEventListener('change',update);
+  browser.removeEventListener('orientationchange',update);
  };
 }
