@@ -1,0 +1,10 @@
+{
+  "id": "./",
+  "name": "R’Circle",
+  "short_name": "R’Circle",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f6ef",
+  "theme_color": "#f6f6ef"
+}
