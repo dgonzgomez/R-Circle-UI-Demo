@@ -144,7 +144,7 @@ const [moduleData,setModuleData]=useState({});
 const [blockFocus,setBlockFocus]=useState(null);
 const [dockExpanded,setDockExpanded]=useState(false);
 const [mapFocus,setMapFocus]=useState(null);
-const [demoMap,setDemoMap]=useState(false),[mapRecenter,setMapRecenter]=useState(0); // preview flag: real interactive UCR map
+const [demoMap,setDemoMap]=useState(Platform.OS==='web'),[mapRecenter,setMapRecenter]=useState(0); // Live map by default on web; native keeps its illustrated fallback.
 const [chat,setChat]=useState([]),chatCount=useRef(0);
 const [requested,setRequested]=useState([]);
 const [joinedClubs,setJoinedClubs]=useState([]);
