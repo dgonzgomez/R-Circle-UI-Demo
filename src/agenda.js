@@ -48,8 +48,3 @@ export function sharedSegments(start,end,handles,day){
  if(cursor<end)segs.push({start:cursor,end,shared:true});
  return segs.filter(s=>s.end-s.start>0);
 }
-
-// Every card in a list uses the same duration scale, rather than its own gap length.
-export function sharedGapScale(gaps,handles,day){
- return Math.max(180,...gaps.map(gap=>sharedSegments(gap.start,gap.end,handles,day).filter(segment=>segment.shared).reduce((sum,segment)=>sum+segment.end-segment.start,0)));
-}
