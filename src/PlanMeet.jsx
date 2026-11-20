@@ -5,17 +5,18 @@ import Pressable from './TransitionPressable';
 import GlassSurface from './GlassSurface';
 const ink='#1c3d4e',muted='#557684',blue='#23bae7';
 // Name a meetup with a friend and drop it into the agenda (demo: lunch at The Habit).
-export default function PlanMeet({person,place='The Habit',time='12:00 PM',end='1:00 PM',onAdd}){
+export default function PlanMeet({person,place='The Habit',placeLabel,title,time='12:00 PM',end='1:00 PM',onAdd}){
  const first=person.name.split(' ')[0];
- const [name,setName]=useState(`${place} with ${first}`);
- const add=()=>onAdd({title:name.trim()||`${place} with ${first}`,time,end});
+ const fallback=title||`${place} with ${first}`;
+ const [name,setName]=useState(fallback);
+ const add=()=>onAdd({title:name.trim()||fallback,time,end});
  return <View style={{gap:14}}>
   <Text style={styles.heading}>Add to agenda</Text>
   <GlassSurface style={styles.card}>
    <Text style={styles.label}>MEETING NAME</Text>
    <TextInput accessibilityLabel="Meeting name" value={name} onChangeText={setName} onSubmitEditing={add} autoFocus selectTextOnFocus style={styles.input}/>
    <View style={[styles.row,{marginTop:16}]}><Clock3 size={15} color={muted}/><Text style={styles.text}>Today · {time} – {end}</Text></View>
-   <View style={[styles.row,{marginTop:10}]}><MapPin size={15} color={muted}/><Text style={styles.text}>{place} · HUB</Text></View>
+   <View style={[styles.row,{marginTop:10}]}><MapPin size={15} color={muted}/><Text style={styles.text}>{placeLabel||`${place} · HUB`}</Text></View>
    <View style={[styles.row,{marginTop:16}]}><View style={[styles.avatar,{backgroundColor:person.color}]}><Text style={styles.initial}>{person.initial}</Text></View><Text style={styles.text}>With {person.name}</Text></View>
   </GlassSurface>
   <Pressable accessibilityRole="button" onPress={add} style={({pressed})=>[styles.button,pressed&&{opacity:.8}]}><CalendarPlus size={18} color="white"/><Text style={styles.buttonText}>Add to agenda</Text></Pressable>
