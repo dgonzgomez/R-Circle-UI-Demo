@@ -2,6 +2,7 @@ export const springSplash={
  id:'spring-splash',title:'Spring Splash',time:'4:00 PM',end:'10:00 PM',
  place:'Bell Tower lawn',kind:'design',day:31,dateLabel:'October 31',
  desc:'Bad Bunny, underscores, and Tinashe. Demo lineup.',
+ image:'./spring-splash.jpg',
 };
 export const briefInvitations=[
  {id:'vraj-basketball',title:'Basketball',time:'7:00 PM',end:'8:00 PM',place:'SRC Basketball Courts',kind:'basketball',day:30,pending:true,invitedBy:{name:'Vraj',handle:'vraj',initial:'V',color:'#d3b08a'},desc:'Want to play basketball at 7?'},

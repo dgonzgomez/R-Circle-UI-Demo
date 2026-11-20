@@ -17,4 +17,4 @@ export default function EventPinPreview({event,onPress}){
   <View pointerEvents="none"><EventMapPin event={event}/></View>
  </Pressable>;
 }
-const styles=StyleSheet.create({preview:{width:74,height:88,borderRadius:17,backgroundColor:'#e7ecde',overflow:'hidden',borderWidth:1,borderColor:'#ffffffd9',alignItems:'center',justifyContent:'center'},road:{position:'absolute',backgroundColor:'#f9f9f1',borderWidth:1,borderColor:'#d6ddcd'},marker:{width:36,height:46},drop:{width:36,height:36,borderRadius:18,borderBottomLeftRadius:0,transform:[{rotate:'-45deg'}],borderWidth:2,borderColor:'white',boxShadow:'0px 3px 8px rgba(20,30,20,.35)'}});
+const styles=StyleSheet.create({preview:{width:74,height:88,borderRadius:17,backgroundColor:'#d9f0f6',overflow:'hidden',borderWidth:1,borderColor:'#ffffffd9',alignItems:'center',justifyContent:'center'},road:{position:'absolute',backgroundColor:'#f9f9f1',borderWidth:1,borderColor:'#c6e2e9'},marker:{width:36,height:46},drop:{width:36,height:36,borderRadius:18,borderBottomLeftRadius:0,transform:[{rotate:'-45deg'}],borderWidth:2,borderColor:'white',boxShadow:'0px 3px 8px rgba(19,34,41,.35)'}});

@@ -11,8 +11,8 @@ export default function CollectionFocus({focus,data,size,onSelect,onAction,onClo
  return <ExpansionScreen origin={focus.bounds} size={size} backdrop="blur" onClose={onClose} label={data.title}>
  {items.map(({item,index})=><GlassSurface key={index} style={styles.card}>
  <Image source={{uri:item.image}} style={focus.type==='photos'?styles.photo:styles.food}/>
- {focus.type==='foods'&&<View style={{padding:18,gap:9}}><Text style={styles.name}>{item.name}</Text><Text style={styles.place}>{item.place}</Text><Pressable accessibilityRole="button" accessibilityLabel={`View ${item.place}`} onPress={()=>onAction(index)} style={styles.placeLink}><MapPin size={15} color="#31533f"/><Text style={{fontSize:12,color:'#31533f'}}>View place</Text></Pressable></View>}
+ {focus.type==='foods'&&<View style={{padding:18,gap:9}}><Text style={styles.name}>{item.name}</Text><Text style={styles.place}>{item.place}</Text><Pressable accessibilityRole="button" accessibilityLabel={`View ${item.place}`} onPress={()=>onAction(index)} style={styles.placeLink}><MapPin size={15} color="#23bae7"/><Text style={{fontSize:12,color:'#23bae7'}}>View place</Text></Pressable></View>}
  </GlassSurface>)}
  </ExpansionScreen>;
 }
-const styles=StyleSheet.create({card:{borderRadius:27,overflow:'hidden'},photo:{width:'100%',aspectRatio:1},food:{width:'100%',height:235,backgroundColor:'#ffffff55'},name:{fontSize:21,color:'#233d32',letterSpacing:-.4},place:{fontSize:12,color:'#7e8979'},placeLink:{flexDirection:'row',gap:7,alignItems:'center',paddingTop:8,paddingBottom:2}});
+const styles=StyleSheet.create({card:{borderRadius:27,overflow:'hidden'},photo:{width:'100%',aspectRatio:1},food:{width:'100%',height:235,backgroundColor:'#ffffff55'},name:{fontSize:21,color:'#1c3d4e',letterSpacing:-.4},place:{fontSize:12,color:'#64a6ba'},placeLink:{flexDirection:'row',gap:7,alignItems:'center',paddingTop:8,paddingBottom:2}});

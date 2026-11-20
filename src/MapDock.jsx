@@ -3,11 +3,11 @@ import {Animated,Easing,Image,PanResponder,Platform,ScrollView,StyleSheet,Text,V
 import {ChevronRight,MapPin,Users} from 'lucide-react-native';
 import Pressable from './TransitionPressable';
 import GlassSurface from './GlassSurface';
-const ink='#233d32',muted='#819078';
+const ink='#1c3d4e',muted='#4f6f7c';
 
 function FriendBadge({count,onImage}){
  if(!count)return null;
- return <View style={[styles.badge,!onImage&&styles.badgeFlat]}><Users size={9} color={onImage?'white':'#3f6a50'}/><Text style={[styles.badgeText,!onImage&&{color:'#3f6a50'}]}>{count}</Text></View>;
+ return <View style={[styles.badge,!onImage&&styles.badgeFlat]}><Users size={9} color={onImage?'white':'#32bde8'}/><Text style={[styles.badgeText,!onImage&&{color:'#32bde8'}]}>{count}</Text></View>;
 }
 
 // Bottom sheet on the map: drag the handle up to expand into For you + a list of campus places.
@@ -50,9 +50,9 @@ export default function MapDock({forYou,campus,bottomInset=0,dateLabel,onExpande
      <Animated.View style={{opacity:height.interpolate({inputRange:[collapsed,collapsed+90],outputRange:[0,1],extrapolate:'clamp'})}}>
      <Text style={[styles.eyebrow,{marginTop:26,marginBottom:6,paddingHorizontal:20}]}>ON CAMPUS</Text>
      <View style={{paddingHorizontal:20}}>{campus.map((p,i)=><Pressable key={p.name} accessibilityRole="button" onPress={p.action} style={[styles.listRow,i>0&&styles.divider]}>
-      {p.img?<Image source={{uri:p.img}} style={styles.thumb}/>:<View style={[styles.thumb,styles.thumbIcon]}><MapPin size={18} color="#55715b"/></View>}
+      {p.img?<Image source={{uri:p.img}} style={styles.thumb}/>:<View style={[styles.thumb,styles.thumbIcon]}><MapPin size={18} color="#51b0cc"/></View>}
       <View style={{flex:1}}><Text style={styles.title}>{p.name}</Text><Text style={styles.sub}>{p.sub}</Text></View>
-      <FriendBadge count={p.friends}/><ChevronRight size={15} color="#a2ab9a"/>
+      <FriendBadge count={p.friends}/><ChevronRight size={15} color="#8ab5c0"/>
      </Pressable>)}</View>
      </Animated.View>
     </ScrollView>
@@ -60,4 +60,4 @@ export default function MapDock({forYou,campus,bottomInset=0,dateLabel,onExpande
   </Animated.View>
  </View>;
 }
-const styles=StyleSheet.create({sheetWrap:{position:'absolute',left:0,right:0,bottom:0},sheet:{flex:1,userSelect:'none',borderTopLeftRadius:31,borderTopRightRadius:31,borderBottomLeftRadius:0,borderBottomRightRadius:0,backgroundColor:'#ffffff24'},grab:{paddingTop:11,paddingHorizontal:20,cursor:'grab',touchAction:'none'},handleHit:{alignSelf:'center',paddingVertical:4,paddingHorizontal:20,marginBottom:12},handle:{width:32,height:4,borderRadius:5,backgroundColor:'#cbd1c2'},header:{flexDirection:'row',justifyContent:'space-between',alignItems:'center',marginBottom:14},eyebrow:{fontSize:8,letterSpacing:1.35,fontWeight:'500',color:'#929a86'},heading:{fontSize:23,letterSpacing:-.8,marginTop:4,color:ink},card:{width:154},cardImage:{width:'100%',height:91,borderRadius:16},photoTag:{position:'absolute',top:9,left:8,backgroundColor:'#20362d8a',padding:5,borderRadius:6},tagText:{fontSize:7,color:'white',letterSpacing:.8},badgeSpot:{position:'absolute',top:8,right:8},badge:{flexDirection:'row',alignItems:'center',gap:3,paddingHorizontal:6,height:18,borderRadius:9,backgroundColor:'#20362d99'},badgeFlat:{backgroundColor:'#3f6a5018'},badgeText:{fontSize:9,fontWeight:'600',color:'white'},title:{fontSize:12,fontWeight:'600',marginTop:8,color:ink},sub:{fontSize:9,color:muted,marginTop:4},listRow:{flexDirection:'row',alignItems:'center',gap:12,paddingVertical:10},divider:{borderTopWidth:1,borderTopColor:'#ffffff80'},thumb:{width:46,height:46,borderRadius:13},thumbIcon:{backgroundColor:'#e3eadb',alignItems:'center',justifyContent:'center'}});
+const styles=StyleSheet.create({sheetWrap:{position:'absolute',left:0,right:0,bottom:0},sheet:{flex:1,userSelect:'none',borderTopLeftRadius:31,borderTopRightRadius:31,borderBottomLeftRadius:0,borderBottomRightRadius:0,backgroundColor:'rgba(228,246,253,0.86)',backdropFilter:'blur(30px) saturate(140%)',WebkitBackdropFilter:'blur(30px) saturate(140%)'},grab:{paddingTop:11,paddingHorizontal:20,cursor:'grab',touchAction:'none'},handleHit:{alignSelf:'center',paddingVertical:4,paddingHorizontal:20,marginBottom:12},handle:{width:32,height:4,borderRadius:5,backgroundColor:'#b9d7df'},header:{flexDirection:'row',justifyContent:'space-between',alignItems:'center',marginBottom:14},eyebrow:{fontSize:8,letterSpacing:1.35,fontWeight:'600',color:'#3d7487'},heading:{fontSize:23,letterSpacing:-.8,marginTop:4,color:ink},card:{width:154},cardImage:{width:'100%',height:91,borderRadius:16},photoTag:{position:'absolute',top:9,left:8,backgroundColor:'#1a37468a',padding:5,borderRadius:6},tagText:{fontSize:7,color:'white',letterSpacing:.8},badgeSpot:{position:'absolute',top:8,right:8},badge:{flexDirection:'row',alignItems:'center',gap:3,paddingHorizontal:6,height:18,borderRadius:9,backgroundColor:'#1a374699'},badgeFlat:{backgroundColor:'#32bde818'},badgeText:{fontSize:9,fontWeight:'600',color:'white'},title:{fontSize:12,fontWeight:'600',marginTop:8,color:ink},sub:{fontSize:9,color:'#4f6f7c',marginTop:4},listRow:{flexDirection:'row',alignItems:'center',gap:12,paddingVertical:10},divider:{borderTopWidth:1,borderTopColor:'#ffffff80'},thumb:{width:46,height:46,borderRadius:13},thumbIcon:{backgroundColor:'#d6eef4',alignItems:'center',justifyContent:'center'}});

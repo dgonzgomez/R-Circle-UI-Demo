@@ -78,8 +78,8 @@ export default function ExpansionScreen({origin,size,initialExpanded=false,inter
  const exitOpacity=exiting?progress.interpolate({inputRange:[0,.18,1],outputRange:[0,1,1],extrapolate:'clamp'}):1;
  const showFloatingCard=renderCard&&!ready&&(!exiting||closeCardTop.current+cardHeight>0);
  return <Animated.View style={[styles.root,{opacity:exitOpacity}]} pointerEvents={exiting?'box-only':'auto'} accessibilityViewIsModal accessibilityLabel={label}>
-  <Animated.View pointerEvents="none" style={{position:'absolute',left:interpolate(start.x,0),top:interpolate(start.y,0),width:interpolate(start.width,screenWidth),height:interpolate(start.height,screenHeight),borderRadius:interpolate(26,0),overflow:'hidden',backgroundColor:backdrop==='blur'?'transparent':backgroundColor||'#e8eee6'}}>
-   {backdrop==='blur'?<GlassSurface style={[StyleSheet.absoluteFillObject,{backgroundColor:'#e6ede142'}]}/>:<><View style={[StyleSheet.absoluteFillObject,{backgroundColor:backgroundColor||'#e8eee6'}]}/><LinearGradient colors={backgroundColor?[backgroundColor,backgroundColor]:['#e9eee7','#e1e9e0','#ede3d8']} style={StyleSheet.absoluteFillObject}/>{!backgroundColor&&<View style={styles.light}/>}</>}
+  <Animated.View pointerEvents="none" style={{position:'absolute',left:interpolate(start.x,0),top:interpolate(start.y,0),width:interpolate(start.width,screenWidth),height:interpolate(start.height,screenHeight),borderRadius:interpolate(26,0),overflow:'hidden',backgroundColor:backdrop==='blur'?'transparent':backgroundColor||'#e5f2f5'}}>
+   {backdrop==='blur'?<GlassSurface style={[StyleSheet.absoluteFillObject,{backgroundColor:'#def1f542'}]}/>:<><View style={[StyleSheet.absoluteFillObject,{backgroundColor:backgroundColor||'#e5f2f5'}]}/><LinearGradient colors={backgroundColor?[backgroundColor,backgroundColor]:['#e6f1f4','#ddedf1','#cfeef6']} style={StyleSheet.absoluteFillObject}/>{!backgroundColor&&<View style={styles.light}/>}</>}
   </Animated.View>
   <Animated.View pointerEvents={ready?'auto':'none'} style={[styles.content,{opacity:detailsOpacity}]}>
    {scrollable?<ScrollView scrollEnabled={ready&&!interactionLocked} onScroll={event=>{scrollOffset.current=event.nativeEvent.contentOffset.y}} scrollEventThrottle={16} showsVerticalScrollIndicator={false} contentContainerStyle={[styles.scroll,{paddingTop:contentTop}]}>
@@ -88,7 +88,7 @@ export default function ExpansionScreen({origin,size,initialExpanded=false,inter
    </ScrollView>:<View style={{flex:1,paddingTop:chromeTop||59}}>{children}</View>}
   </Animated.View>
   {showFloatingCard&&<Animated.View pointerEvents="none" style={{position:'absolute',left:interpolate(start.x,20),top:interpolate(start.y,exiting?closeCardTop.current:contentTop),width:interpolate(start.width,screenWidth-40),height:interpolate(start.height,cardHeight),borderRadius:interpolate(26,29),overflow:'hidden',transform:[{translateY:pickup.interpolate({inputRange:[0,1],outputRange:[0,-18]})},{scale:pickup.interpolate({inputRange:[0,1],outputRange:[1,1.035]})},{rotate:pickup.interpolate({inputRange:[0,1],outputRange:['0deg','-1.2deg']})}]}}>{renderCard()}</Animated.View>}
-  <Animated.View pointerEvents={exiting?'none':'auto'} style={[styles.back,{top:backTop,opacity:detailsOpacity}]}><Pressable onPress={close} accessibilityRole="button" accessibilityLabel="Back">{backgroundColor?<ArrowLeft size={23} color="#007aff"/>:<GlassSurface style={styles.backGlass}><ArrowLeft size={19} color="#233d32"/></GlassSurface>}</Pressable></Animated.View>
+  <Animated.View pointerEvents={exiting?'none':'auto'} style={[styles.back,{top:backTop,opacity:detailsOpacity}]}><Pressable onPress={close} accessibilityRole="button" accessibilityLabel="Back">{backgroundColor?<ArrowLeft size={23} color="#1fcbff"/>:<GlassSurface style={styles.backGlass}><ArrowLeft size={19} color="#1c3d4e"/></GlassSurface>}</Pressable></Animated.View>
  </Animated.View>;
 }
 const styles=StyleSheet.create({

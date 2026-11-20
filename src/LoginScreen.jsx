@@ -4,7 +4,7 @@ import {Mail} from 'lucide-react-native';
 import Pressable from './TransitionPressable';
 import Gradient from './Gradient';
 
-const ink='#233d32',green='#31533f';
+const ink='#1c3d4e',green='#23bae7';
 const font=Platform.OS==='web'?'-apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif':undefined;
 const logoFont=Platform.OS==='web'?'"Special Gothic Expanded One", sans-serif':undefined;
 const easeInOut=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
@@ -33,8 +33,8 @@ export default function LoginScreen({onLogin}){
   requestAnimationFrame(frame);
  };
  return <Animated.View ref={root} style={[StyleSheet.absoluteFillObject,l.root,{opacity:fade}]}>
-  <Gradient colors={['#e8eee7','#e1e8dd','#eee4da']} style={StyleSheet.absoluteFillObject}/>
-  <View pointerEvents="none" style={[StyleSheet.absoluteFillObject,{overflow:'hidden'}]}><View style={[l.blob,{top:'22%',right:-95}]}/><View style={[l.blob,{bottom:20,left:-110,backgroundColor:'#9bb9ac33'}]}/></View>
+  <Gradient colors={['#e6f1f4','#d8edf2','#d1eff7']} style={StyleSheet.absoluteFillObject}/>
+  <View pointerEvents="none" style={[StyleSheet.absoluteFillObject,{overflow:'hidden'}]}><View style={[l.blob,{top:'22%',right:-95}]}/><View style={[l.blob,{bottom:20,left:-110,backgroundColor:'#89c2d033'}]}/></View>
   <View style={l.center}>
    <Text style={l.wordmark}>R’Circle</Text>
    <View ref={button} style={{alignSelf:'stretch'}}>
@@ -49,11 +49,11 @@ export default function LoginScreen({onLogin}){
 }
 
 const l=StyleSheet.create({
- root:{backgroundColor:'#e6ece4',overflow:'hidden'},
- blob:{position:'absolute',width:280,height:300,borderRadius:170,backgroundColor:'#d8c7b745'},
+ root:{backgroundColor:'#e1f0f4',overflow:'hidden'},
+ blob:{position:'absolute',width:280,height:300,borderRadius:170,backgroundColor:'#a6dce945'},
  center:{flex:1,alignItems:'center',justifyContent:'center',paddingHorizontal:24,gap:40},
  wordmark:{fontFamily:logoFont,color:ink,fontSize:34,letterSpacing:-.5},
  button:{alignSelf:'stretch',height:54,borderRadius:27,backgroundColor:green,flexDirection:'row',alignItems:'center',justifyContent:'center',gap:10},
  buttonText:{fontFamily:font,color:'white',fontSize:15,fontWeight:'600'},
- ring:{position:'absolute',borderRadius:9999,borderWidth:9,borderColor:'rgba(63,106,80,0.35)',boxShadow:'0px 0px 24px rgba(63,106,80,0.35)'}
+ ring:{position:'absolute',borderRadius:9999,borderWidth:9,borderColor:'rgba(50,189,232,0.35)',boxShadow:'0px 0px 24px rgba(50,189,232,0.35)'}
 });

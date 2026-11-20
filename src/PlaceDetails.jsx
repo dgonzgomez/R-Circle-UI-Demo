@@ -4,7 +4,7 @@ import {Footprints,MapPin,Plus} from 'lucide-react-native';
 import GlassSurface from './GlassSurface';
 import Pressable from './TransitionPressable';
 
-const ink='#233d32';
+const ink='#1c3d4e';
 function describe(name){
  if(/Coffee/i.test(name))return {title:'Coffee Bean',image:'coffeeStore',body:'Coffee, drinks, and outdoor seating at the HUB.',busy:'Not too busy',match:/Coffee/i};
  if(/Library/i.test(name))return {title:'Rivera Library',image:'library',body:'The second floor has open seats and study areas.',busy:'Moderately busy',match:/Library/i};
@@ -19,7 +19,7 @@ export default function PlaceDetails({name,photos,people,onAdd}){
   <GlassSurface style={styles.photo}>{place.image?<Image source={{uri:photos[place.image]}} style={styles.image}/>:<View style={styles.iconFill}><Footprints size={46} color={ink} strokeWidth={1.6}/></View>}</GlassSurface>
   <GlassSurface style={styles.block}>
    <Text style={styles.title}>{place.title}</Text>
-   <View style={[styles.row,{marginTop:10}]}><MapPin size={14} color="#829078"/><Text style={styles.meta}>UC Riverside · A few minutes away</Text></View>
+   <View style={[styles.row,{marginTop:10}]}><MapPin size={14} color="#5da9c1"/><Text style={styles.meta}>UC Riverside · A few minutes away</Text></View>
    <Text style={styles.description}>{place.body}</Text>
   </GlassSurface>
   <GlassSurface style={styles.block}>
@@ -37,11 +37,11 @@ const styles=StyleSheet.create({
  block:{borderRadius:25,padding:19},
  title:{fontFamily:Platform.OS==='web'?'-apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif':undefined,fontSize:22,letterSpacing:-.6,color:ink},
  row:{flexDirection:'row',alignItems:'center',gap:8},
- meta:{fontSize:12,color:'#829078'},
- description:{fontFamily:Platform.OS==='web'?'-apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif':undefined,fontSize:13,lineHeight:21,color:'#74816e',marginTop:12},
+ meta:{fontSize:12,color:'#5da9c1'},
+ description:{fontFamily:Platform.OS==='web'?'-apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif':undefined,fontSize:13,lineHeight:21,color:'#60a8be',marginTop:12},
  line:{fontFamily:Platform.OS==='web'?'-apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif':undefined,fontSize:13,color:ink},
  label:{fontFamily:Platform.OS==='web'?'-apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif':undefined,fontSize:12,fontWeight:'600',color:ink},
- dot:{width:6,height:6,borderRadius:3,backgroundColor:'#8eaa78'},
+ dot:{width:6,height:6,borderRadius:3,backgroundColor:'#3cbbe2'},
  avatar:{width:33,height:33,borderRadius:17,alignItems:'center',justifyContent:'center',overflow:'hidden'},
  avatarImage:{width:'100%',height:'100%'},
  initial:{fontSize:15,color:'#503d32'},

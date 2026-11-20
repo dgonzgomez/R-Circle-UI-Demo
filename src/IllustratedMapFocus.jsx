@@ -21,10 +21,10 @@ export default function IllustratedMapFocus({focus,size,onOpen,children}){
   const pop=Animated.spring(bounce,{toValue:1,stiffness:250,damping:12,delay:160,useNativeDriver:true});
   motion.start();pop.start();return()=>{motion.stop();pop.stop()};
  },[focus,size.width,size.height]);
- return <View style={[StyleSheet.absoluteFillObject,{backgroundColor:'#e7ecde'}]}>
+ return <View style={[StyleSheet.absoluteFillObject,{backgroundColor:'#d9f0f6'}]}>
   <Animated.View style={[StyleSheet.absoluteFillObject,{transform:pan.getTranslateTransform()}]}>
    {children}
-   {focus&&<Animated.View style={{position:'absolute',left:x*size.width-18,top:y*size.height-40,zIndex:3,transform:[{scale:bounce}]}}><Pressable accessibilityLabel={`Open ${focus.event.title}`} onPress={()=>onOpen(focus.event)}><EventMapPin event={focus.event}/><Text style={{position:'absolute',top:47,width:150,left:-57,textAlign:'center',fontSize:11,fontWeight:'500',color:'#233d32',backgroundColor:'#f3f5ebec',borderRadius:7,padding:5}}>{focus.event.title}</Text></Pressable></Animated.View>}
+   {focus&&<Animated.View style={{position:'absolute',left:x*size.width-18,top:y*size.height-40,zIndex:3,transform:[{scale:bounce}]}}><Pressable accessibilityLabel={`Open ${focus.event.title}`} onPress={()=>onOpen(focus.event)}><EventMapPin event={focus.event}/><Text style={{position:'absolute',top:47,width:150,left:-57,textAlign:'center',fontSize:11,fontWeight:'500',color:'#1c3d4e',backgroundColor:'#eaf8fbec',borderRadius:7,padding:5}}>{focus.event.title}</Text></Pressable></Animated.View>}
   </Animated.View>
  </View>;
 }

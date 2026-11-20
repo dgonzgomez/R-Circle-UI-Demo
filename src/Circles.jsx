@@ -4,7 +4,7 @@ import {Check,Plus,Search,Trash2,UserPlus} from 'lucide-react-native';
 import Pressable from './TransitionPressable';
 import GlassSurface from './GlassSurface';
 import FriendSearch from './FriendSearch';
-const ink='#233d32',muted='#819078',green='#3f6a50';
+const ink='#1c3d4e',muted='#557684',green='#32bde8';
 const font=Platform.OS==='web'?'-apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif':undefined;
 
 // Slim row above the profile cards: filter by circle, make a new circle, or add a friend.
@@ -33,7 +33,7 @@ export function CircleComposer({friends,initial,onCreate,onDelete}){
  const create=()=>{if(!name.trim()){setError('Name your circle.');return}if(!picked.length){setError('Pick at least one friend.');return}onCreate({name:name.trim(),members:picked})};
  return <View style={{gap:14,paddingTop:16}}>
   <Text style={styles.heading}>{editing?'Manage circle':'New circle'}</Text>
-  <GlassSurface style={styles.card}><Text style={styles.cardTitle}>Name</Text><TextInput autoFocus={!editing} value={name} onChangeText={v=>{setName(v);setError('')}} placeholder="Roommates, study group…" placeholderTextColor="#9aa592" style={styles.nameInput}/></GlassSurface>
+  <GlassSurface style={styles.card}><Text style={styles.cardTitle}>Name</Text><TextInput autoFocus={!editing} value={name} onChangeText={v=>{setName(v);setError('')}} placeholder="Roommates, study group…" placeholderTextColor="#5caac1" style={styles.nameInput}/></GlassSurface>
   <GlassSurface style={styles.card}><Text style={styles.cardTitle}>Friends · {picked.length} selected</Text>{friends.map((p,i)=>{const on=picked.includes(p.handle);return <Pressable key={p.handle} accessibilityRole="checkbox" accessibilityState={{checked:on}} accessibilityLabel={`Add ${p.name} to circle`} onPress={()=>{setError('');setPicked(cur=>on?cur.filter(h=>h!==p.handle):[...cur,p.handle])}} style={[styles.friendRow,i>0&&styles.divider]}><Avatar p={p}/><View style={{flex:1}}><Text style={styles.rowTitle}>{p.name}</Text><Text style={styles.rowSub}>@{p.handle}</Text></View><View style={[styles.check,on&&styles.checkOn]}>{on&&<Check size={11} color="white"/>}</View></Pressable>})}</GlassSurface>
   {!!error&&<Text accessibilityRole="alert" style={[styles.rowSub,{color:'#925b49',fontSize:12,paddingHorizontal:8}]}>{error}</Text>}
   <Pressable accessibilityRole="button" onPress={create}><GlassSurface style={[styles.card,styles.primary]}><Text style={styles.primaryText}>{editing?'Save changes':'Create circle'}</Text></GlassSurface></Pressable>
@@ -45,7 +45,7 @@ export function AddFriendView({discoverable,requested,onAdd,onOpen}){
  const [query,setQuery]=useState('');
  return <View style={{gap:14,paddingTop:16}}>
   <Text style={styles.heading}>Add a friend</Text>
-  <GlassSurface style={styles.searchBox}><Search size={16} color="#7e8875"/><TextInput autoFocus value={query} onChangeText={setQuery} autoCapitalize="none" autoCorrect={false} placeholder="Search by name or @username" placeholderTextColor="#9aa592" style={styles.searchInput}/></GlassSurface>
+  <GlassSurface style={styles.searchBox}><Search size={16} color="#62a7bc"/><TextInput autoFocus value={query} onChangeText={setQuery} autoCapitalize="none" autoCorrect={false} placeholder="Search by name or @username" placeholderTextColor="#5caac1" style={styles.searchInput}/></GlassSurface>
   <FriendSearch embedded query={query} friends={[]} discoverable={discoverable} requested={requested} onAdd={onAdd} onOpen={onOpen}/>
  </View>;
 }
@@ -53,16 +53,16 @@ export function AddFriendView({discoverable,requested,onAdd,onOpen}){
 const styles=StyleSheet.create({
  bar:{flexDirection:'row',alignItems:'center',gap:8,marginBottom:14},
  chip:{height:32,paddingHorizontal:13,borderRadius:16,flexDirection:'row',alignItems:'center',gap:5,backgroundColor:'#ffffffb0',borderWidth:1,borderColor:'#ffffff'},
- chipOn:{backgroundColor:green,borderColor:green},chipNew:{borderStyle:'dashed',borderColor:'#9fb39f',backgroundColor:'#ffffff50'},
+ chipOn:{backgroundColor:green,borderColor:green},chipNew:{borderStyle:'dashed',borderColor:'#8fbdc8',backgroundColor:'#ffffff50'},
  chipText:{fontFamily:font,fontSize:11,fontWeight:'500',color:ink},
- addBtn:{width:34,height:34,borderRadius:17,backgroundColor:green,alignItems:'center',justifyContent:'center',boxShadow:'0px 4px 12px rgba(49,83,63,0.25)'},
+ addBtn:{width:34,height:34,borderRadius:17,backgroundColor:green,alignItems:'center',justifyContent:'center',boxShadow:'0px 4px 12px rgba(35,186,231,0.25)'},
  heading:{fontFamily:font,fontSize:29,letterSpacing:-1.1,color:ink,marginBottom:4},
  card:{borderRadius:25,padding:19},cardTitle:{fontFamily:font,fontSize:12,fontWeight:'600',color:ink,marginBottom:10},
  nameInput:{fontFamily:font,fontSize:20,letterSpacing:-.5,color:ink,paddingVertical:4,...Platform.select({web:{outlineStyle:'none'}})},
  friendRow:{flexDirection:'row',alignItems:'center',gap:11,paddingVertical:10},divider:{borderTopWidth:1,borderTopColor:'#ffffff90'},
  avatar:{borderWidth:2,borderColor:'white',alignItems:'center',justifyContent:'center'},initial:{fontFamily:Platform.OS==='web'?'Georgia':undefined,fontSize:14,color:'#503d32'},
  rowTitle:{fontFamily:font,fontSize:13,color:ink},rowSub:{fontFamily:font,fontSize:10,color:muted,marginTop:3},
- check:{width:20,height:20,borderRadius:10,borderWidth:1.5,borderColor:'#c3cbb8',alignItems:'center',justifyContent:'center'},checkOn:{backgroundColor:green,borderColor:green},
+ check:{width:20,height:20,borderRadius:10,borderWidth:1.5,borderColor:'#acd3dc',alignItems:'center',justifyContent:'center'},checkOn:{backgroundColor:green,borderColor:green},
  primary:{backgroundColor:green,backgroundImage:'none',borderColor:green,alignItems:'center',paddingVertical:15},primaryText:{fontFamily:font,fontSize:13,fontWeight:'600',color:'white'},
  deleteBtn:{flexDirection:'row',alignItems:'center',justifyContent:'center',gap:8,paddingVertical:15},
  searchBox:{height:46,borderRadius:23,paddingHorizontal:15,flexDirection:'row',alignItems:'center',gap:10},searchInput:{flex:1,fontFamily:font,fontSize:13,color:ink,height:40,...Platform.select({web:{outlineStyle:'none'}})},
